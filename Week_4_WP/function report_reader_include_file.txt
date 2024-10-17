@@ -1,0 +1,19 @@
+function report_reader_include_file($atts) {
+//user logged in
+if (!current_user_can('manage_options')) {
+return 'You do not have sufficient permissions to access this content.';
+}
+// get shortcode params
+extract(shortcode_atts(array(
+'path' -> '',
+), $atts));
+// $path = sanitize_text_field($path);
+// construct the full path
+$full_path = ABSPATH . $path;
+if (!file_exists($full_path)) {
+	return 'The specified file does not exist.';
+}
+
+// return the file contents
+return file_get_contents($full_path);
+add_shortcode('include_report',report_reader_include_file');
